@@ -1,0 +1,62 @@
+jQuery(document).ready(function(){
+  jQuery('#txtSubmit').click(function(){
+	var abc = mnlogin();
+    jQuery.ajax({
+           type:"POST",
+           url: my_ajax_object.ajax_url,
+           data: {
+               action: "login_action",
+               user: abc.user, //jQuery("#txtUser").val(),
+               pass : abc.pass, // jQuery("#txtPass").val(),
+           },
+           success:function(data){
+               if(data.indexOf('Success')!=-1){
+                 window.location.reload();
+               }
+           }
+    });
+  });
+});
+
+
+Keep as it is (it checks wordpress account)
+Now 
+
+
+click
+read-data
+do logic of polkadot
+call jquery ()
+
+
+Retrun
+
+
+post -> 
+
+http
+
+
+ <input id="txtUser" name="txtUser" type="email" class="form-control" name="username" value="" placeholder="Email">
+ <input id="txtPass" name="txtPass" type="password" class="form-control" name="password" placeholder="Password">
+
+ <button class="btn btn-primary" id="pubSubmit" name="pubSubmit" onclick="emaillogin();">Submit</button>
+ 
+
+function emaillogin() {
+
+var email = document.getElementById('txtUser').value;
+var password = document.getElementById('txtPass').value;
+
+
+var result = 'fail';
+
+if(email == 'ganesh@gmail.com' && password == 'welcome123') {
+  result = 'success';
+  return result;
+}
+else {
+  return result;
+}
+
+}
