@@ -72,6 +72,29 @@
  }
  
  
+
+
+/** Set up the Ajax Logout */
+if (is_admin()) {
+    // We only need to setup ajax action in admin.
+    add_action('wp_ajax_custom_ajax_logout', 'custom_ajax_logout_func');
+} else {
+    wp_enqueue_script('custom-ajax-logout', plugin_dir_url( __FILE__ ) . '/js/customlogout.js', array('jquery'), '1.0', true );
+    wp_localize_script('custom-ajax-logout', 'ajax_object',
+        array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'home_url' => get_home_url(),
+            'logout_nonce' => wp_create_nonce('ajax-logout-nonce'),
+        )
+    );
+}
+function custom_ajax_logout_func(){
+    check_ajax_referer( 'ajax-logout-nonce', 'ajaxsecurity' );
+    wp_logout();
+    ob_clean(); // probably overkill for this, but good habit
+    wp_send_json_success();
+}
+
  
 
 
@@ -162,6 +185,7 @@ const { web3Accounts, web3Enable, web3FromAddress,
                                       
 									  
 				  <a id="emailtxtSubmit" name="emailtxtSubmit" onclick="emaillogin();" class="btn btn-success">Login  </a>
+				  <a id="logout" name="logout" onclick="logout();" class="btn btn-success">Logout for testing  </a>
                                     </div>
                                 </div>
 								<div id="message" name="message">
