@@ -19,16 +19,43 @@
      wp_enqueue_script( 'mylogin', plugin_dir_url( __FILE__ ) . '/js/mylogin.js' );
 	 wp_enqueue_script( 'mytest', plugin_dir_url( __FILE__ ) . '/js/mytest.js' );
 	 wp_enqueue_script( 'mnemoniclogin10', plugin_dir_url( __FILE__ ) . '/js/mnemoniclogin10.js', "", null );
-	 wp_enqueue_script( 'extensionlogin09', plugin_dir_url( __FILE__ ) . '/js/extensionlogin09.js', "", null );
-	 wp_enqueue_script( 'emaillogin18', plugin_dir_url( __FILE__ ) . '/js/emaillogin18.js', "", null );
-	 wp_enqueue_script( 'scanlogin36', plugin_dir_url( __FILE__ ) . '/js/scanlogin36.js', "", null );
+	 wp_enqueue_script( 'extensionlogin11', plugin_dir_url( __FILE__ ) . '/js/extensionlogin11.js', "", null );
+	 wp_enqueue_script( 'emaillogin25', plugin_dir_url( __FILE__ ) . '/js/emaillogin25.js', "", null );
+	 wp_enqueue_script( 'scanlogin40', plugin_dir_url( __FILE__ ) . '/js/scanlogin40.js', "", null );
      wp_localize_script( 'mylogin', 'my_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
-     wp_register_script('prefix_bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js');
-     wp_enqueue_script('prefix_bootstrap');
-     wp_register_style('prefix_bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css');
-     wp_enqueue_style('prefix_bootstrap');
+//     wp_register_script('prefix_uid', '//cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuidv4.min.js'); 
+//     wp_enqueue_script('prefix_uid');
+
+//     wp_register_script('prefix_qrcode', '//cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js');
+//     wp_enqueue_script('prefix_qrcode');
+
+//    wp_enqueue_script( 'socketfun5', plugin_dir_url( __FILE__ ) . '/js/socketfun5.js', "", null );
+//     wp_enqueue_script('socketfun5');
+
+//     wp_register_script('prefix_bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js');
+//     wp_enqueue_script('prefix_bootstrap');
+//     wp_register_style('prefix_bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css');
+//     wp_enqueue_style('prefix_bootstrap');
 	 
+
+     wp_register_style('bootstrap_min_css', '//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
+   wp_enqueue_style('bootstrap_min_css');
+
+    wp_register_style('plugin_style', plugin_dir_url( __FILE__ ) .'/style.css');
+   wp_enqueue_style('plugin_style');
+
+//   wp_register_style('daisyui', '//cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css');
+//   wp_enqueue_style('daisyui');
+
+//   wp_register_style('daisyui@2.6.0', '//cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css');
+//   wp_enqueue_style('daisyui@2.6.0');
+
+//   wp_register_style('googleapis', 'https://fonts.googleapis.com');
+//   wp_enqueue_style('googleapis');
+
+//   wp_register_style('gstatic', 'https://fonts.gstatic.com');
+//   wp_enqueue_style('daisygstaticui');
 	 
 	 
  }
@@ -36,6 +63,96 @@
 
  add_action( 'wp_ajax_login_action', 'login_action' );
  add_action( 'wp_ajax_nopriv_login_action', 'login_action' );
+  add_action( 'wp_logout', 'logout_action' );
+
+
+ function logout_action($user_id){
+
+     $method = "POST";
+     $url = "http://student.selendra.com:4000/logoutstatus";
+     $data = "test";
+
+//     $user = wp_get_current_user();
+
+
+    $the_user = get_user_by( 'id', $user_id ); // 54 is a user ID
+
+
+    $myObj = new stdClass();
+    $myObj->user_email = $the_user->user_email;
+    $myObj->user_id = $user_id;
+
+
+         
+
+ var_dump($user_id);
+
+
+   $url = 'http://137.184.224.174:4000/logoutstatus';
+$content = json_encode($myObj);
+
+$curl = curl_init($url);
+curl_setopt($curl, CURLOPT_HEADER, false);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_HTTPHEADER,
+        array("Content-type: application/json"));
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+
+$json_response = curl_exec($curl);
+
+$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+if ( $status != 201 ) {
+    die("Error: call to URL $url failed with status $status, response $json_response, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
+}
+
+
+curl_close($curl);
+
+$response = json_decode($json_response, true);
+
+ var_dump($response);
+
+ }
+
+ function CallAPI($method, $url, $data = false)
+{
+    $curl = curl_init();
+
+    switch ($method)
+    {
+        case "POST":
+            curl_setopt($curl, CURLOPT_POST, 1);
+
+            if ($data)
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            break;
+        case "PUT":
+            curl_setopt($curl, CURLOPT_PUT, 1);
+            break;
+        default:
+            if ($data)
+                $url = sprintf("%s?%s", $url, http_build_query($data));
+    }
+
+    // Optional Authentication:
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($curl, CURLOPT_USERPWD, "username:password");
+
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+    echo $curl;
+    echo "<script> console.log($curl);  </script>";
+
+    $result = curl_exec($curl);
+
+    curl_close($curl);
+
+    return $result;
+}
+ 
 
  function login_action(){
    //echo $_REQUEST['user']." : ".$_REQUEST['pass'];
@@ -84,7 +201,7 @@ if (is_admin()) {
         array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'home_url' => get_home_url(),
-            'logout_nonce' => wp_create_nonce('ajax-logout-nonce'),
+            // 'logout_nonce' => wp_create_nonce('ajax-logout-nonce'),
         )
     );
 }
@@ -101,7 +218,7 @@ function custom_ajax_logout_func(){
 
 
  function my_login ( $content ) {
-   if(!is_user_logged_in()){
+
 ?>
 
 <script src='https://wordpress.koompi.org/wp-content/plugins/wp-login/js/bundle-polkadot-util.js?ver=5.9.3' id='polkadotUtil-js'></script>
@@ -112,12 +229,13 @@ function custom_ajax_logout_func(){
 <script src='https://wordpress.koompi.org/wp-content/plugins/wp-login/js/bundle-polkadot-extension-dapp.js?ver=5.9.3' id='polkadotExtensionDapp-js'></script>
 
 
- <link
+
+ <!-- link
             href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css"
             rel="stylesheet"
             type="text/css"
-        />
-        <script src="https://cdn.tailwindcss.com"></script>
+        / >
+        <script src="https://cdn.tailwindcss.com"></script -->
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js"
             integrity="sha512-is1ls2rgwpFZyixqKFEExPHVUUL+pPkBEPw47s/6NDQ4n1m6T/ySeDW3p54jp45z2EJ0RSOgilqee1WhtelXfA=="
@@ -156,179 +274,348 @@ const { web3Accounts, web3Enable, web3FromAddress,
  
 </script>
 
-      <div class="container">
-          <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-              <div class="panel panel-info" >
-                      <div class="panel-heading">
-                          <div class="panel-title">Email login</div>
-                          <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>
-                      </div>
+<script> 
+   function notimplemented() {
+     alert("Not implemented");
+   }
+   function registerinmobile() {
+     alert("Register in studentid-app");
+   }
+   function greenon() {
+            document.getElementById("green").classList.add("active");
+   }
+   function greenoff() {
+            document.getElementById("green").classList.remove("active");
+   }
 
-                      <div style="padding-top:30px" class="panel-body" >
+</script>
 
-                          <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                            <form id="emailloginform" class="form-horizontal" role="form">
-                                <div style="margin-bottom: 25px" class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                  <input id="txtUser" name="txtUser" type="email" class="form-control" name="username" value="" placeholder="Email">
-                                </div>
+<?php
+   if(!is_user_logged_in()){
+?>
 
-                                <div style="margin-bottom: 25px" class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                  <input id="txtPass" name="txtPass" type="password" class="form-control" name="password" placeholder="Password">
-                                </div>
+<script>
+window.onload = function() {
+  setupqrcodelisten ();
+};
 
-                                <div style="margin-top:10px" class="form-group">
-                                    <!-- Button -->
-                                    <div class="col-sm-12 controls">
-                                      
-                                      
-									  
-				  <a id="emailtxtSubmit" name="emailtxtSubmit" onclick="emaillogin();" class="btn btn-success">Login  </a>
-				  <a id="logout" name="logout" onclick="logout();" class="btn btn-success">Logout for testing  </a>
-                                    </div>
-                                </div>
-								<div id="message" name="message">
-								
-								</div>
-								
-                            </form>
-                          </div>
-                      </div>
-          </div>
+</script>
+
+     <nav>
+      <div class="container-main">
+        <center>
+          <img src="images/Selendra-1 1.png" height="70px"/>
+        </center>
       </div>
-	  
-	  <div class="container" >
-            
-             <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-              <div class="panel panel-info" >
-                      <div class="panel-heading">
-                          <div class="panel-title">QRcode login</div>
-                          
-                      </div>
-
-                      <div style="padding-top:30px" class="panel-body" >
-
-                          <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                            <form id="scanloginform" class="form-horizontal" role="form">
-							 <!-- div style="margin-bottom: 25px" class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                  <input id="scantxtUser" name="scantxtUser" type="email" class="form-control" name="scanusername" value="" placeholder="Email">
-                                </div>
-                                <div>
-                                  <input id="scanid" name="scanid" type="text" class="form-control"  value="" placeholder="scanid">
-                                </div -->
-
-                                <div style="margin-bottom: 25px" class="input-group">
-                                
-				<div style="float:right; display:none; " id="qrcode"></div>
-
-
-
-      <div style="display:block"     id="qrcodeloading"  class="spinner-border text-primary"     >  </div>
-                </div>				
-								</div>
-
-								
-                
-				
-           <div style="margin-top:10px" class="form-group">
-                                    <!-- Button -->
-					 <!-- div class="col-sm-12 controls">
-                                      
-                                      
-			  <a id="validatescanSubmit" name="validatescanSubmit" onclick="validatescanlogin();" class="btn btn-success">Validate user  </a>
-                                    </div>
-                                    <div class="col-sm-12 controls">
-			  <a id="scanSubmit"  name="scanSubmit" onclick="simulatescan();" class="btn btn-success">Simulate scan  </a>
-                                    </div -->
-                                </div>
-								<div id="scanmessage" name="scanmessage">
-								
-								</div>
-								</div>
-                      </div>
+    </nav>
+    <div id="orange" class="b-tab active">
+      
+      <div class="sub-main-title-bg">
+        <center>
+          URL verification
+          <span
+          ><a class="url-sel" href="https://accounts.selendra.com"
+            >https://accounts.selendra.com</a
+          ></span
+        </center>
+      </div>
+      <br />
+      <div class="container-main revers">
+        <div>
+          <h4><b>Selendra Account Login</b></h4>
         </div>
-		
-	  <!-- div class="container">
-          <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-              <div class="panel panel-info" >
-                      <div class="panel-heading">
-                          <div class="panel-title">Mnemonic login</div>
-                          
-                      </div>
-
-                      <div style="padding-top:30px" class="panel-body" >
-
-                          <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                            <form id="mneloginform" class="form-horizontal" role="form">
-                                <div style="margin-bottom: 25px" class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                  <input id="Publickey" name="Publickey" type="text" class="form-control" name="Publickey" value="" placeholder="Publickey">
-                                </div>
-
-                                <div style="margin-bottom: 25px" class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                  <input id="txtMnemonic" name="txtMnemonic" type="text" class="form-control" name="Mnemonic" value="" placeholder="Mnemonic">
-                                </div>
-
-                                <div style="margin-top:10px" class="form-group">
-                                    
-                                    <div class="col-sm-12 controls">
-                                                                           
-									  
-									  <a id="mneSubmit" name="mnetxtSubmit" onclick="menomoniclogin();" class="btn btn-success">Login  </a>
-                                    </div>
-                                </div>
-								<div id="mnemessage" name="mnemessage">
-								
-								</div>
-                            </form>
-                          </div>
-                      </div>
+        <br />
+        <br />
+        <div class="row gx-5">
+          <div class="col-lg-7">
+            <div>
+              <a href="#phone" data-tab="orange"  class="button-phone1"> Phone </a>
+            <a href="#email"  data-tab="green" class="b-nav-tab "> Email</a>
+            </div>
+            <br />
+            <br />
+            <form>
+              <div class="mb-4">
+                <label for="exampleInputPhone1" class="form-label">Phone Number</label>
+                <div class="row">
+                  <div class="col-3">
+                  <div class="cambodia-number">
+                      <img class="cm-img" src="/images/cambodia.png"/>
+                      +855
+                  </div>
+                  </div>
+              <div class="col-9">
+                  <input
+                              type="email"
+                              class="form-controls"
+                              id="exampleInputphone1"
+                              aria-describedby="emailHelp"
+                          />
+              </div>
+                </div>
+                
+              </div>
+              <div class="mb-4">
+                <label for="exampleInputPhone1" class="form-label"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  class="form-controls"
+                  id="exampleInputphone2"
+                  aria-describedby="emailHelp"
+                />
+              </div>
+            <button type="button" class="submit-btn" onclick="notimplemented();">Submit</button>
+            </form>
+            <br />
+            <div>
+              <h6>Forgot Password?</h6>
+              <h6>Register Now</h6>
+            </div>
           </div>
-      </div -->
-	  
-	   <div class="container">
-          <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-              <div class="panel panel-info" >
-                      <div class="panel-heading">
-                          <div class="panel-title">Extension login</div>
-                          
-                      </div>
-
-                      <div style="padding-top:30px" class="panel-body" >
-
-                          <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                            <form id="extloginform" class="form-horizontal" role="form">
-                                <div style="margin-bottom: 25px" class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                  <input id="pubkeyinextension" name="pubkeyinextension" type="text" class="form-control" name="pubkeyinextension" value="" placeholder="External Publickey">
-                                </div>
-							<div style="margin-bottom: 25px" class="input-group">
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                  <input id="extnemail" name="extnemail" type="email" class="form-control"  value="" placeholder="Extn Email">
-                                </div>
-                                
-
-                                <div style="margin-top:10px" class="form-group">
-                                    <!-- Button -->
-                                    <div class="col-sm-12 controls">
-                                                                           
-									  
-									  <a id="extsubmit" name="exttxtSubmit" onclick="extensionlogin();" class="btn btn-success">Login  </a>
-									  
-                                    </div>
-                                </div>
-								<div id="extmessage" name="extmessage">
-								
-								</div>
-								
-                            </form>
-                          </div>
-                      </div>
+  
+          <div class="col-lg-5">
+            <div>
+              <center>
+				<div style="float:right; display:none; " id="qrcode1"></div>
+      <div style="display:block"     id="qrcodeloading1"  class="spinner-border text-primary"     >  </div>
+                  <br />
+                  <h6><b>Login with QR Code</b></h6>
+                  <br />
+                  <p>
+                    Scan this code with the
+                    <span class="url-sel">Bitriel mobile app</span> to log in
+                    instantly.
+                  </p>
+                </center>
+            </div>
           </div>
+        </div>
       </div>
+      <!-- mobile -->
+      <div class="container-main revers-mobile">
+        <center>
+          <h4>Selendra Account Login-1</h4>
+        </center>
+        <br />
+        <br />
+        <div>
+          <div>
+            <br />
+            <div>
+              <h6>Forgot Password?</h6>
+              <h6>Register Now</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div >
+
+
+    <!-- Email -->
+
+    <div id="green" class="b-tab"><div class="sub-main-title-bg">
+      <center>
+        URL verification
+        <span
+          ><a class="url-sel" href="https://accounts.selendra.com"
+            >https://accounts.selendra.com</a
+          ></span
+        >
+      </center>
+    </div>
+    <br />
+    <div class="container-main revers">
+      <div>
+        <h4><b>Selendra Account Login -2 </b></h4>
+      </div>
+      <br />
+      <br />
+      <div class="row gx-5">
+        <div class="col-lg-7">
+          <div>
+            <a href="#phone" data-tab="orange" class="b-nav-tab"> Phone </a>
+            <a href="#email" data-tab="green" class="button-phone1" > Email</a>
+          </div>
+          <br />
+          <br />
+          <form>
+            <div class="mb-4">
+              <label for="exampleInputEmail1" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-controls"
+              id="txtUser" name="txtUser"  placeholder="Email" 
+                aria-describedby="emailHelp"
+              />
+            </div>
+            <div class="mb-4">
+              <label for="exampleInputEmail1" class="form-label"
+                >Password</label
+              >
+              <input
+                type="password"
+                class="form-controls"
+               id="txtPass" name="txtPass"  placeholder="Password" 
+                aria-describedby="emailHelp"
+              />
+            </div>
+            <button type="button" class="submit-btn" onclick="emaillogin();">Submit</button>
+          </form>
+          <br />
+          <div>
+            <h6>Forgot Password?</h6>
+            <h6>Register Now</h6>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div>
+            <center>
+				<div style="float:right; display:none; " id="qrcode2"></div>
+      <div style="display:block"     id="qrcodeloading2"  class="spinner-border text-primary"     >  </div>
+              <br />
+              <h6><b>Login with QR Code</b></h6>
+              <br />
+              <p>
+                Scan this code with the
+                <span class="url-sel">Bitriel mobile app</span> to log in
+                instantly.
+              </p>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div >
+    <!-- mobile -->
+    </div></div>
+
+    <script>
+      function Tabs() {
+        var bindAll = function () {
+          var menuElements = document.querySelectorAll("[data-tab]");
+          for (var i = 0; i < menuElements.length; i++) {
+            menuElements[i].addEventListener("click", change, false);
+          }
+        };
+
+        var clear = function () {
+          var menuElements = document.querySelectorAll("[data-tab]");
+          for (var i = 0; i < menuElements.length; i++) {
+            menuElements[i].classList.remove("active");
+            var id = menuElements[i].getAttribute("data-tab");
+            document.getElementById(id).classList.remove("active");
+          }
+        };
+
+        var change = function (e) {
+          clear();
+          e.target.classList.add("active");
+          var id = e.currentTarget.getAttribute("data-tab");
+          document.getElementById(id).classList.add("active");
+        };
+
+        bindAll();
+      }
+
+      var connectTabs = new Tabs();
+    </script>
+    <!-- <div class="tab">
+      <button class="tablinks" onclick="openCity(event, 'London')">
+        London
+      </button>
+      <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
+      <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+    </div>
+
+    <div id="London" class="tabcontent">
+      <h3>London</h3>
+      <p>London is the capital city of England.</p>
+    </div>
+
+    <div id="Paris" class="tabcontent">
+      <h3>Paris</h3>
+      <p>Paris is the capital of France.</p>
+    </div>
+
+    <div id="Tokyo" class="tabcontent">
+      <h3>Tokyo</h3>
+      <p>Tokyo is the capital of Japan.</p>
+    </div>
+
+    <script>
+      function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+    </script> -->
+      <!-- div class="container-main revers">
+      <div>
+        <h4><b>Selendra Account Login</b></h4>
+      </div>
+      <br />
+      <br />
+      <div class="row gx-5">
+        <div class="col-lg-7">
+          <div>
+            <button type="button" class="button-email">Email</button>
+            <a class="button-phone" onclick="notimplemented();" >Phone Number</a>
+            <a class="button-phone" onclick="notimplemented();" >Extension </a>
+          </div>
+          <br />
+          <br />
+          <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+          <form id="emailloginform" role="form">
+            <div class="mb-4">
+              <label for="emailloginform" class="form-label">Email</label>
+              <input id="txtUser" name="txtUser" type="email" class="form-control"  value="" placeholder="Email" />
+            </div>
+            <div class="mb-4">
+              <label for="emailloginform" class="form-label">Password</label>
+              <input id="txtPass" name="txtPass" type="password" class="form-control"  placeholder="Password" />
+            </div>
+            <button type="button" class="submit-btn" onclick="emaillogin();">Submit</button>
+          </form>
+
+        <br />
+          <div  id="message" class="alert-danger " name="message" ></div>
+
+        <div>
+          <h6  onclick="registerinmobile();" >Register Now</h6>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div>
+          <center>
+				<div style="float:right; display:none; " id="qrcode"></div>
+      <div style="display:block"     id="qrcodeloading"  class="spinner-border text-primary"     >  </div>
+            <br />
+            <h6><b>Login with QR Code</b></h6>
+            <br />
+            <p>
+              Scan this code with the
+              <span class="url-sel">Bitriel mobile app</span> to log in
+              instantly.
+            </p>
+          </center>
+        </div>
+      </div>
+
+      </div>
+    </div -->
+
+
 	  
 	  
 	  
@@ -337,6 +624,7 @@ const { web3Accounts, web3Enable, web3FromAddress,
     else{
 ?>
         <center>Click <a href="<?php echo wp_logout_url();?>">here</a> to logout</center>
+				  <a id="logout" name="logout" onclick="logout();" class="btn btn-success">Logout for testing  </a>
 <?php
     }
  }
