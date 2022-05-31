@@ -1,0 +1,34 @@
+# Only allow direct access to specific Web-available files.
+
+# Apache 2.2
+<IfModule !mod_authz_core.c>
+	Order Deny,Allow
+	Deny from all
+</IfModule>
+
+#Allow Images
+<FilesMatch "^(cloud-moon\.svg|flags\.png|flags@2x\.png|qr_code\.png)$">
+	<IfModule !mod_authz_core.c>
+		Allow from all
+	</IfModule>
+	
+	<IfModule mod_authz_core.c>
+		Require all granted
+	</IfModule>
+</FilesMatch>
+
+#Allow JS | CSS
+<FilesMatch "^(intlTelInput\.js|tabController\.js|utils\.js|initCountryCode\.js|intlTelInput\.css)$">
+	<IfModule !mod_authz_core.c>
+		Allow from all
+	</IfModule>
+	
+	<IfModule mod_authz_core.c>
+		Require all granted
+	</IfModule>
+</FilesMatch>
+
+# Apache 2.4
+<IfModule mod_authz_core.c>
+	Require all denied
+</IfModule>
