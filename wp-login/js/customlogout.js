@@ -1,5 +1,0 @@
-
-function jslogoutfunction( ) {
-
- alert("hi");
-}
