@@ -1,3 +1,3 @@
 # sel-wp-plugin
 
-Selendra WordPress Login UI to work with Student ID App.
+Selendra WordPress Login UI to work with Selendra ID App.
