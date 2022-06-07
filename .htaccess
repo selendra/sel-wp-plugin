@@ -18,7 +18,7 @@
 </FilesMatch>
 
 #Allow JS | CSS
-<FilesMatch "^(intlTelInput\.js|tabController\.js|utils\.js|initCountryCode\.js|intlTelInput\.css)$">
+<FilesMatch "^(main\.js|intlTelInput\.js|tabController\.js|utils\.js|initCountryCode\.js|initDarkMode\.js|intlTelInput\.css|tailwind\.css)$">
 	<IfModule !mod_authz_core.c>
 		Allow from all
 	</IfModule>

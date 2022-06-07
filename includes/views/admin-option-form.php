@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1><?php echo esc_html_e('Seldendra WP Login Settings', 'sel_wp_login') ?></h1>
+    <h1><?php _e('Seldendra WP Login Settings', 'sel-wp-login') ?></h1>
     <form method="POST" action="options.php">
         <?php
         settings_fields('sel_wp_login_page');

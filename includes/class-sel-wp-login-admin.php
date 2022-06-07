@@ -32,7 +32,7 @@ class Sel_WP_Login_Admin
         // Add Phone Login Field to WP Admin 
         add_settings_field(
             'sel_wp_login_phone_option',
-            __('Phone Login', SEL_WP_LOGIN_KEY_NAME),
+            __('Phone Login', 'sel-wp-login'),
             array($this, 'sel_wp_login_phone_option'),
             'sel_wp_login_page',
             'sel_wp_login_page_section'
@@ -40,7 +40,7 @@ class Sel_WP_Login_Admin
         // Add QR Login Field to WP Admin 
         add_settings_field(
             'sel_wp_login_qr_option',
-            __('QR Code Login', SEL_WP_LOGIN_KEY_NAME),
+            __('QR Code Login', 'sel-wp-login'),
             array($this, 'sel_wp_login_qr_option'),
             'sel_wp_login_page',
             'sel_wp_login_page_section'
@@ -55,8 +55,8 @@ class Sel_WP_Login_Admin
     public function admin_menu()
     {
         add_menu_page(
-            __('Selendra WP Login', SEL_WP_LOGIN_KEY_NAME),
-            __('Selendra WP Menu', SEL_WP_LOGIN_KEY_NAME),
+            __('Selendra WP Login', 'sel-wp-login'),
+            __('Selendra WP Menu', 'sel-wp-login'),
             'manage_options',
             'sel_wp_login_page',
             array($this, 'sel_login_admin_page_content'),
@@ -88,7 +88,7 @@ class Sel_WP_Login_Admin
             get_admin_url() . 'admin.php'
         ));
 
-        $settings_link = "<a href='$url'>" . __('Settings', SEL_WP_LOGIN_KEY_NAME) . '</a>';
+        $settings_link = "<a href='$url'>" . __('Settings', 'sel-wp-login') . '</a>';
         array_push(
             $links,
             $settings_link

@@ -1,17 +1,17 @@
 <?php
-
 /**
  * @package Selendra WP Login
  */
 /*
 Plugin Name: Selendra WP Login
 Plugin URI:
-Description: This is Selendra WP Login Plugin to enable user login with Selendra Student ID
+Description: This is Selendra WP Login Plugin to enable user login to work with Selendra ID App.
 Version: 1.0.0
 Author: Sothy SEK
 Author URI:
 License: GPLv2 or later
-Text Domain: sel_wp_login
+Text Domain: sel-wp-login
+Domain Path: /languages
 */
 
 /*

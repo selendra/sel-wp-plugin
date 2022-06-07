@@ -1,13 +1,4 @@
-function myFunction() {
-    alert("hello");
-    // jQuery(document).ready(function ($) {
-    //     //$("#myDropdown")[0].classList.toggle("show");
-    //     console.log("dropdown clicked");
-    // }
-    // );
-}
 jQuery(document).ready(function ($) {
-
     $(".dropbtn").click(function () {
         $("#myDropdown")[0].classList.toggle("show");
     });
@@ -17,10 +8,10 @@ jQuery(document).ready(function ($) {
     var preferedCountry = countryData.find(country => country.iso2 == 'kh');
     countryData = [preferedCountry].concat(countryData);
     var intputCountryCode = $("#myDropdown");
-    $(".dropbtn").html('<div class="me-3 iti__flag iti__' + preferedCountry.iso2 + ' mr-2"></div> +' + '<div class="me-2">' + preferedCountry.dialCode + '</div>');
+    $(".dropbtn").html('<div class="mr-2 iti__flag iti__' + preferedCountry.iso2 + '"></div> ' + '<div>+' + preferedCountry.dialCode + '</div>');
 
     for (var country of countryData) {
-        var element = '<a class="dropdown-item" href="#"><div id="flag" class="me-3 iti__flag iti__' + country.iso2 + '"></div><div class="flag-name">' + country.name + '</div><div class="me-2"><span class="dial-code text-muted me-2"> +' + country.dialCode + '</span></div></a>';
+        var element = '<a class="dropdown-item" href="#"><div id="flag" class="mr-2 iti__flag iti__' + country.iso2 + '"></div><div class="flag-name">' + country.name + '</div><div><span class="dial-code text-muted"> +' + country.dialCode + '</span></div></a>';
         intputCountryCode.append(element);
     }
 

@@ -16,11 +16,13 @@ class Sel_WP_Login
      */
     public function __construct($file = "", $version = "1.0.0")
     {
+
         $this->file = $file;
+
+        //Load Plugin Text Domain
+        $this->load_plugin_textdomain();
+
         // Hook Sel WP Login Admin Setting 
-
-        load_plugin_textdomain(SEL_WP_LOGIN_KEY_NAME);
-
         if (is_admin()) {
             add_action('init', array($this, 'init_wp_login_admin'));
         } else {
@@ -36,6 +38,16 @@ class Sel_WP_Login
         }
 
         return self::$_instance;
+    }
+
+    // Load default text domain and sel-wp-login plugin text domain
+    public function load_plugin_textdomain()
+    {
+        $domain = 'sel-wp-login';
+
+        $locale = apply_filters('plugin_locale', get_locale(), $domain);
+        load_textdomain($domain, WP_LANG_DIR . '/' . $domain . '/' . $domain . '-' . $locale . '.mo');
+        load_plugin_textdomain($domain, false, plugin_basename($this->file) . '/languages/');
     }
 
     // Initialize SEL WP Login CSS

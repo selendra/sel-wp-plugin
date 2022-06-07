@@ -1,0 +1,88 @@
+# Copyright (C) 2022 Sothy SEK
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Selendra WP Login 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/sel-wp-plugin\n"
+"POT-Creation-Date: 2022-06-07 12:12+0700\n"
+"PO-Revision-Date: 2022-06-07 12:15+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: km_KH\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Domain: sel-wp-login\n"
+
+#. Plugin Name of the plugin
+#: includes/class-sel-wp-login-admin.php:58
+msgid "Selendra WP Login"
+msgstr "Selendra WP Login"
+
+#. Description of the plugin
+msgid ""
+"This is Selendra WP Login Plugin to enable user login to work with Selendra "
+"ID App."
+msgstr ""
+"នេះគឺជា Selendra WP Login Plugin សម្រាប់​ឲ្យអ្នកប្រើប្រាស់ចូលគណនីតាមរយៈ Selendra ID "
+"App។"
+
+#. Author of the plugin
+msgid "Sothy SEK"
+msgstr ""
+
+#: includes/class-sel-wp-login-admin.php:35
+msgid "Phone Login"
+msgstr "ទូរស័ព្ទ"
+
+#: includes/class-sel-wp-login-admin.php:43
+msgid "QR Code Login"
+msgstr ""
+
+#: includes/class-sel-wp-login-admin.php:59
+msgid "Selendra WP Menu"
+msgstr "ម៉ឺនុយ Selendra WP"
+
+#: includes/class-sel-wp-login-admin.php:91
+msgid "Settings"
+msgstr "ការកំណត់"
+
+#: includes/class-sel-wp-login-css.php:235
+msgid "Selendra Account Login"
+msgstr "ចូលគណនី Selendra"
+
+#: includes/views/admin-option-form.php:2
+msgid "Seldendra WP Login Settings"
+msgstr "ការកំណត់ Seldendra WP Login"
+
+#: includes/views/phone-login.php:9 includes/views/phone-tab-header.php:10
+msgid "Phone Number"
+msgstr "លេខទូរស័ព្ទ"
+
+#: includes/views/phone-login.php:27
+msgid "Password"
+msgstr "ពាក្យសម្ងាត់"
+
+#: includes/views/phone-tab-header.php:5
+msgid "Email"
+msgstr "អ៊ីមែល"
+
+#: includes/views/qr-login.php:5
+msgid "Log in with QR code"
+msgstr ""
+
+#: includes/views/qr-login.php:7
+msgid "Scan this code with the"
+msgstr ""
+
+#: includes/views/qr-login.php:9
+msgid ""
+"Bitriel mobile\n"
+"            app"
+msgstr ""
+
+#: includes/views/qr-login.php:12
+msgid "to log in instantly."
+msgstr ""

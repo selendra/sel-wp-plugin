@@ -1,0 +1,7 @@
+.DS_Store
+package-lock.json
+postcss.config.js
+tailwind.config.js
+node_modules/
+languages/*.pot
+assets/css/input.css
